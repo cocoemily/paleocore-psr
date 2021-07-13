@@ -1,0 +1,7 @@
+## paleocore-psr
+
+An application for the PALAEOSILKROAD project to be used with Paleo Core 
+
+### Quick start
+1. Add 'psr' to INSTALL_APPS settings
+2. Migrate to create the psr models
