@@ -1084,9 +1084,9 @@ def import_geo_contexts(s, d, photos):
         if psr_g.context_type in PSR_LOESS_PROF_VOCABULARY: #TODO figure out how to do this more eloquently
             psr_g.size_of_loess=r.record["Size_of_lo"]
 
-            if r.record["Loess_mean"] not in ("", None):
+            if r.record["Mean_thick"] not in ("", None):
                 psr_g.loess_mean_thickness = Decimal(r.record["Mean_thick"])
-            if r.record["Loess_max_"] not in ("", None):
+            if r.record["Max_thickn"] not in ("", None):
                 psr_g.loess_max_thickness = Decimal(r.record["Max_thickn"])
 
             psr_g.loess_landscape_position=r.record["Landscape_"]
