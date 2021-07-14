@@ -1273,10 +1273,16 @@ def import_survey_occurrences(s, d, photos):
                 new_aggr.__dict__[key] = psr_a.__dict__[key]
 
             new_aggr.screen_size=r.record["Screen_siz"]
-            new_aggr.burning=r.record["Burning"]
-            new_aggr.bone=r.record["Bone"]
-            new_aggr.microfauna=r.record["Microfauna"]
-            new_aggr.pebbles=r.record["Pebbles"]
+            if r.record["Burning"] not in ('-None Selected-', "", None, "Null"):
+                new_aggr.burning=r.record["Burning"]
+            if r.record["Bone"] not in ('-None Selected-', "", None, "Null"):
+                new_aggr.bone=r.record["Bone"]
+            if r.record["Microfauna"] not in ('-None Selected-', "", None, "Null"):
+                new_aggr.microfauna=r.record["Microfauna"]
+            if r.record["Molluscs"] not in ('-None Selected-', "", None, "Null"):
+                new_aggr.molluscs=r.record["Molluscs"]
+            if r.record["Pebbles"] not in ('-None Selected-', "", None, "Null"):
+                new_aggr.pebbles=r.record["Pebbles"]
             new_aggr.smallplatforms=Decimal(r.record["Smallplatf"])
             new_aggr.smalldebris=Decimal(r.record["Smalldebri"])
             new_aggr.tinyplatforms=Decimal(r.record["Tinyplatfo"])
