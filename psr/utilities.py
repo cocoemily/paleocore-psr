@@ -1215,7 +1215,7 @@ def import_survey_occurrences(s, d, photos):
         psr_a.year_collected = psr_a.date_collected.year
 
         # set item type code
-        if psr_a.find_type.lower() in PSR_ARCHAEOLOGY_VOCABULARY:
+        if psr_a.find_type.lower() in [i.lower() for i in PSR_ARCHAEOLOGY_VOCABULARY]:
             psr_a.item_type = "Archaeological"
             new_arch = Archaeology(geom=psr_a.geom)
             for key in list(psr_a.__dict__.keys()):
@@ -1236,7 +1236,7 @@ def import_survey_occurrences(s, d, photos):
             new_arch.save()
             subtype_archaeology(survey=True)
 
-        elif psr_a.find_type.lower() in PSR_BIOLOGY_VOCABULARY:
+        elif psr_a.find_type.lower() in [i.lower() for i in PSR_BIOLOGY_VOCABULARY]:
             psr_a.item_type = "Biological"
             new_bio = Biology(geom=psr_a.geom)
             for key in list(psr_a.__dict__.keys()):
@@ -1251,7 +1251,7 @@ def import_survey_occurrences(s, d, photos):
             new_bio.last_import=True
             new_bio.save()
 
-        elif psr_a.find_type.lower() in PSR_GEOLOGY_VOCABULARY:
+        elif psr_a.find_type.lower() in [i.lower() for i in PSR_GEOLOGY_VOCABULARY]:
             psr_a.item_type = "Geological"
             new_geo = Geology(geom=psr_a.geom)
             for key in list(psr_a.__dict__.keys()):
@@ -1266,7 +1266,7 @@ def import_survey_occurrences(s, d, photos):
             new_geo.last_import=True
             new_geo.save()
 
-        elif psr_a.find_type.lower() in PSR_AGGREGATE_VOCABULARY:
+        elif psr_a.find_type.lower() in [i.lower() for i in PSR_AGGREGATE_VOCABULARY]:
             psr_a.item_type = "Aggregate"
             new_aggr = Aggregate(geom=psr_a.geom)
             for key in list(psr_a.__dict__.keys()):
