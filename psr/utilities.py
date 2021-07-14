@@ -1214,6 +1214,9 @@ def import_survey_occurrences(s, d, photos):
         psr_a.date_recorded = psr_a.date_collected
         psr_a.year_collected = psr_a.date_collected.year
 
+        psr_a.last_import = True
+        psr_a.save()
+
         # set item type code
         if psr_a.find_type.lower() in [i.lower() for i in PSR_ARCHAEOLOGY_VOCABULARY]:
             psr_a.item_type = "Archaeological"
@@ -1238,7 +1241,10 @@ def import_survey_occurrences(s, d, photos):
 
         elif psr_a.find_type.lower() in [i.lower() for i in PSR_BIOLOGY_VOCABULARY]:
             psr_a.item_type = "Biological"
-            new_bio = Biology(geom=psr_a.geom)
+            taxon = Taxon.objects.get_or_create(name=r.record["Taxon"])[0]
+            idq = IdentificationQualifier.objects.get_or_create(name=r.record["Taxon"])[0]
+
+            new_bio = Biology(geom=psr_a.geom, taxon=taxon, identification_qualifier=idq)
             for key in list(psr_a.__dict__.keys()):
                 new_bio.__dict__[key] = psr_a.__dict__[key]
 
@@ -1292,13 +1298,6 @@ def import_survey_occurrences(s, d, photos):
 
             new_aggr.last_import=True
             new_aggr.save()
-
-        else:
-            pass
-
-        psr_a.last_import = True
-        #return psr_a #for testing purposes
-        #psr_a.save()  # last step to add it to the database
 
         if r.record["Image"]:
             photonames = r.record["Image"].split(",")
