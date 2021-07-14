@@ -2,3 +2,4 @@ include LICENSE
 include README.md
 recursive-include psr/data-forms *
 recursive-include psr/templates *
+recursive-include psr/fixtures *

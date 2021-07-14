@@ -1,0 +1,22 @@
+{
+  "type" : "FeatureCollection",
+  "features" : [ {
+    "geometry" : {
+      "coordinates" : [ 35.5876697, -3.1617522 ],
+      "type" : "Point"
+    },
+    "properties" : {
+      "Google Maps URL" : "http://maps.google.com/?q=Ngorongoro+Crater,+Tanzania&ftid=0x18340d59ac10ebb9:0xf5336dab1671264c",
+      "Location" : {
+        "Geo Coordinates" : {
+          "Latitude" : "-3.1617522",
+          "Longitude" : "35.5876697"
+        }
+      },
+      "Published" : "2015-06-29T19:59:03Z",
+      "Title" : "Ngorongoro Crater",
+      "Updated" : "2015-06-29T19:59:03Z"
+    },
+    "type" : "Feature"
+  } ]
+}
