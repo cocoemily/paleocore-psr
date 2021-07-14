@@ -1104,7 +1104,7 @@ def import_geo_contexts(s, d, photos):
             #psr_g.loess_number_cultural_horizons=r.record[23] #Loess_numb_2 with old FCL
             #psr_g.loess_number_coarse_layers=r.record[24] #Loess_numb_3 with old FCL
             psr_g.loess_number_soil_horizons = r.record["Number_soi"]
-            psr_g.loess_number_cultural_horizons = r.record["Number_cult"]
+            psr_g.loess_number_cultural_horizons = r.record["Number_cul"]
 
 
             if r.record["Presence_v"] in ('-None Selected-'): #Loess_pres_1
