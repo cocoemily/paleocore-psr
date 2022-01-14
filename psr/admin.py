@@ -138,8 +138,7 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
         }),
         ('Location', {
             'fields': [ ('geological_context'), ('unit'),
-                        ('geom',), ('point'),
-                        ('point_x', 'point_y')]
+                        ('geom',), ('point')]
         }),
         ('Problems', {
             'fields': [('problem', 'problem_comment'),
