@@ -30,6 +30,7 @@ def find_and_delete_duplicates(modeladmin, request, queryset):
 
     return render(request, 'admin/psr/duplicates.html', context={'items': dups})
 
+
 CUSTOM_MAP_SETTINGS = {
     "GooglePointFieldWidget": (
         ("mapCenterLocationName", 'Kazakhstan'),
@@ -137,7 +138,8 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
         }),
         ('Location', {
             'fields': [ ('geological_context'), ('unit'),
-                        ('geom',), ('point')]
+                        ('geom',), ('point'),
+                        ('point_x', 'point_y')]
         }),
         ('Problems', {
             'fields': [('problem', 'problem_comment'),

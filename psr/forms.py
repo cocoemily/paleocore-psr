@@ -1,5 +1,6 @@
 from django import forms
 from psr.models import *
+from django.forms import MultiWidget
 
 
 class UploadShapefile(forms.Form):
@@ -79,3 +80,7 @@ class UploadJSON(forms.Form):
 #                   "item_scientific_name", "item_description", "taxon", "identification_qualifier"
 #                   ]
 #         #fields = ['barcode', 'taxon', 'identification_qualifier']
+
+
+#class CustomPointWidget(MultiWidget):
+
