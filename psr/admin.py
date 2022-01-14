@@ -103,9 +103,10 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
         'date_recorded', 'field_number',
         'found_by', 'recorded_by', 'collector', 'finder',
          'item_type', 'find_type',)
-        for field in fields:
-            if obj.__dict__.get(field) not in (None, ''):
-                readonly.append(field)
+        if obj is not None:
+            for field in fields:
+                if obj.__dict__.get(field) not in (None, ''):
+                    readonly.append(field)
 
         return readonly
 
@@ -395,9 +396,10 @@ class GeologicalContextAdmin(projects.admin.PaleoCoreLocalityAdminGoogle):
 
     def get_readonly_fields(self, request, obj=None):
         readonly = []
-        for field in (default_read_only_fields + ('date_collected', 'basis_of_record', 'recorded_by')):
-            if obj.__dict__.get(field) not in (None, ''):
-                readonly.append(field)
+        if obj is not None:
+            for field in (default_read_only_fields + ('date_collected', 'basis_of_record', 'recorded_by')):
+                if obj.__dict__.get(field) not in (None, ''):
+                    readonly.append(field)
 
         return readonly
 
