@@ -160,7 +160,8 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
             if obj.point in (None, ''):
                 formfield_overrides = {
                     models.CharField: {'widget': TextInput(attrs={'size': '50'})},
-                    models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})}
+                    models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})},
+                    models.PointField: {'widget': LatLongWidget}
                 }
             else:
                 formfield_overrides = psrformfield
