@@ -42,7 +42,7 @@ CUSTOM_MAP_SETTINGS = {
 psrformfield = {
     models.CharField: {'widget': TextInput(attrs={'size': '50'})},
     models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})},
-    models.PointField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)}
+    models.GeometryField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)}
 }
 
 default_read_only_fields = ('id', 'geom', 'point_x', 'point_y', 'easting', 'northing', 'date_last_modified', 'date_created', 'last_import', 'date_collected',
@@ -95,9 +95,20 @@ class OccurrenceResource(resources.ModelResource):
     class Meta:
         model = Occurrence
 
+#this overrides correctly, but specific forms would need to be made for each admin
+# class OccurrenceForm(forms.ModelForm):
+#     class Meta:
+#         model = Occurrence
+#         exclude = ()
+#         widgets = {
+#             'point': GooglePointFieldWidget,
+#             'geom': GooglePointFieldWidget,
+#         }
+
 
 class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
     resource_class = OccurrenceResource
+    #forms = OccurrenceForm
     change_list_template = 'admin/psr/psr_change_list.html'
 
     # readonly_fields = default_read_only_fields + (
