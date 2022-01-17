@@ -152,7 +152,20 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
     inlines = [ImagesInline]
 
     save_as = True
-    formfield_overrides = psrformfield
+    #formfield_overrides = psrformfield
+
+    def get_formfield_overrides(self, request, obj=None):
+        formfield_overrides = {}
+        if obj is not None:
+            if obj.point in (None, ''):
+                formfield_overrides = {
+                    models.CharField: {'widget': TextInput(attrs={'size': '50'})},
+                    models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})}
+                }
+            else:
+                formfield_overrides = psrformfield
+
+        return formfield_overrides
 
     actions = [find_and_delete_duplicates, 'export_simple_csv', 'export_shapefile', 'subtype_arch', 'subtype_bio', 'subtype_geo', 'subtype_agg']
 
