@@ -34,7 +34,7 @@ def find_and_delete_duplicates(modeladmin, request, queryset):
 psrformfield = {
     models.CharField: {'widget': TextInput(attrs={'size': '50'})},
     models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})},
-    models.PointField: {"widget": GooglePointFieldWidget(mapCenterLocationName='Kazakhstan')}
+    models.PointField: {"widget": GooglePointFieldWidget(mapCenterLocation=[48.94035296953983, 67.75063569716886])}
 }
 
 default_read_only_fields = ('id', 'geom', 'point_x', 'point_y', 'easting', 'northing', 'date_last_modified', 'date_created', 'last_import', 'date_collected',
