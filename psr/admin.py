@@ -31,10 +31,18 @@ def find_and_delete_duplicates(modeladmin, request, queryset):
     return render(request, 'admin/psr/duplicates.html', context={'items': dups})
 
 
+CUSTOM_MAP_SETTINGS = {
+    "GooglePointFieldWidget": (
+        ("mapCenterLocationName", 'Kazakhstan'),
+        ("mapCenterLocation", [49.14200071858253, 67.33315509322178]),
+    ),
+}
+
+
 psrformfield = {
     models.CharField: {'widget': TextInput(attrs={'size': '50'})},
     models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})},
-    models.PointField: {"widget": GooglePointFieldWidget(mapCenterLocation=[48.94035296953983, 67.75063569716886])}
+    models.PointField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)}
 }
 
 default_read_only_fields = ('id', 'geom', 'point_x', 'point_y', 'easting', 'northing', 'date_last_modified', 'date_created', 'last_import', 'date_collected',
@@ -100,9 +108,9 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
     def get_readonly_fields(self, request, obj=None):
         readonly = []
         fields = default_read_only_fields + (
-        'date_recorded', 'field_number',
-        'found_by', 'recorded_by', 'collector', 'finder',
-         'item_type', 'find_type',)
+            'date_recorded', 'field_number',
+            'found_by', 'recorded_by', 'collector', 'finder',
+            'item_type', 'find_type',)
         if obj is not None:
             for field in fields:
                 if obj.__dict__.get(field) not in (None, ''):
