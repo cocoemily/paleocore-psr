@@ -99,14 +99,14 @@ class LatLongWidget(forms.MultiWidget):
             return tuple(reversed(value.coords))
         return (None, None)
 
-class LatLongField(forms.MultiValueField):
 
+class LatLongField(forms.MultiValueField):
     widget = LatLongWidget
     srid = 4326
 
     default_error_messages = {
-        'invalid_latitude' : _('Enter a valid latitude.'),
-        'invalid_longitude' : _('Enter a valid longitude.'),
+        'invalid_latitude': ('Enter a valid latitude.'),
+        'invalid_longitude': ('Enter a valid longitude.'),
     }
 
     def __init__(self, *args, **kwargs):
