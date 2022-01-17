@@ -42,7 +42,9 @@ CUSTOM_MAP_SETTINGS = {
 psrformfield = {
     models.CharField: {'widget': TextInput(attrs={'size': '50'})},
     models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})},
-    models.GeometryField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)}
+    models.GeometryField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)},
+    models.PointField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)},
+    models.MultiPointField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)},
 }
 
 default_read_only_fields = ('id', 'geom', 'point_x', 'point_y', 'easting', 'northing', 'date_last_modified', 'date_created', 'last_import', 'date_collected',
