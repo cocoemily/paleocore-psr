@@ -31,16 +31,10 @@ def find_and_delete_duplicates(modeladmin, request, queryset):
     return render(request, 'admin/psr/duplicates.html', context={'items': dups})
 
 
-CUSTOM_MAP_SETTINGS = {
-    "GooglePointFieldWidget": (
-        ("mapCenterLocationName", 'Kazakhstan'),
-    ),
-}
-
 psrformfield = {
     models.CharField: {'widget': TextInput(attrs={'size': '50'})},
     models.TextField: {'widget': Textarea(attrs={'rows': 5, 'cols': 75})},
-    models.PointField: {"widget": GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS)}
+    models.PointField: {"widget": GooglePointFieldWidget(mapCenterLocationName='Kazakhstan')}
 }
 
 default_read_only_fields = ('id', 'geom', 'point_x', 'point_y', 'easting', 'northing', 'date_last_modified', 'date_created', 'last_import', 'date_collected',
