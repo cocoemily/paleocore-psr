@@ -417,6 +417,7 @@ class GeologicalContextAdmin(projects.admin.PaleoCoreLocalityAdminGoogle):
 
     def get_readonly_fields(self, request, obj=None):
         readonly = []
+        readonly.append('date_last_modified')
         if obj is not None:
             for field in (default_read_only_fields + ('date_collected', 'basis_of_record', 'recorded_by')):
                 if obj.__dict__.get(field) not in (None, ''):
