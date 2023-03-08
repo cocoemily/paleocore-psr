@@ -9,3 +9,6 @@ An application for the PALAEOSILKROAD project to be used with Paleo Core
  
 3. Add 'psr' to INSTALL_APPS in settings/base.py
 4. Migrate to create the psr models
+
+#### NOTE
+paleocore-psr requires mdbtools for importing excavation databases
