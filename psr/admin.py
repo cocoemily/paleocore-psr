@@ -309,11 +309,11 @@ class ShortGeoContextFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         geocontexts = set([eo.geological_context for eo in model_admin.model.objects.all()])
-        return [(gc.name) for gc in geocontexts]
+        return [(gc.id, gc.name) for gc in geocontexts]
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(name=self.value())
+            return queryset.filter(geologicalcontext__id=self.value())
 
 
 class ExcavationOccurrenceResource(resources.ModelResource):
