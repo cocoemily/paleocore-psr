@@ -1,4 +1,5 @@
 from django.contrib.gis import admin
+from django.contrib import admin
 from django.contrib.admin.widgets import AdminFileWidget
 from django.urls import reverse, path
 from django.utils.html import format_html
@@ -302,6 +303,19 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
         return tool_item_urls + super(OccurrenceAdmin, self).get_urls()
 
 
+class ShortGeoContextFilter(admin.SimpleListFilter):
+    title = "By geological context"
+    parameter_name = "geological_context"
+
+    def lookups(self, request, model_admin):
+        geocontexts = set([eo.geological_context for eo in model_admin.model.objects.all()])
+        return [(gc.name) for gc in geocontexts]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(name=self.value())
+
+
 class ExcavationOccurrenceResource(resources.ModelResource):
     class Meta:
         model = ExcavationOccurrence
@@ -317,7 +331,7 @@ class ExcavationOccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
                        'excavator', 'geological_context', 'prism')
 
     list_display = ('type', 'geological_context', 'cat_number')
-    list_filter = ['type', 'geological_context']
+    list_filter = ['type', ShortGeoContextFilter]
 
     fieldsets = (
         ('Record Details', {

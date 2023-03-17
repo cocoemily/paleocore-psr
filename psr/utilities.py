@@ -1043,7 +1043,7 @@ def parse_access(file_path, site_name, locality_names=locality_names):
             return
 
     db = AccessParser(file_path)
-    context = db.parse_table("Context")
+    context = db.parse_table('Context')
     xyz = db.parse_table("xyz")
     # units = db.parse_table("EDM_Units")
 
