@@ -17,7 +17,6 @@ from django.template import RequestContext
 from django.contrib import messages
 from dateutil.parser import parse
 from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import TemporaryFileUploadHandler
 
 # App Libraries
 from .models import Occurrence, Biology, Archaeology, Geology, Taxon, IdentificationQualifier
@@ -159,10 +158,6 @@ class ImportAccessDatabase(generic.FormView):
     form_class = UploadMDB
     context_object_name = 'upload'
     success_url = '../?last_import__exact=1'
-
-    def post(self, request, *args, **kwargs):
-        request.upload_handlers = [TemporaryFileUploadHandler(request=request)]
-        return self._post(request)
 
     def get_import_file(self):
         return self.request.FILES['mdbUpload']
