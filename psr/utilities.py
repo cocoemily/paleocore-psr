@@ -19,6 +19,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from decimal import Decimal
 from mdb_parser import MDBTable
 from access_parser import AccessParser
+from fuzzywuzzy import process as fwp
 import unicodecsv
 import json
 
@@ -1028,19 +1029,24 @@ def parse_mdb(file_path, site_name, locality_names=locality_names):
 
 def parse_access(file_path, site_name, locality_names=locality_names):
     lname = site_name
+    gcmatch = fwp.extractOne(lname, [gc.name for gc in GeologicalContext.objects.get_queryset()])
 
-    try:
-        locality = GeologicalContext.objects.get(name=lname)
-    except:
-        if lname in locality_names:
-            lname2 = locality_names[lname]
-            locality = GeologicalContext.objects.get(name=lname2)
-        elif not any(char.isdigit() for char in lname):
-            lname2 = lname + " 1"
-            locality = GeologicalContext.objects.get(name=lname2)
-        else:
-            print("Need to import Geological Context first!")
-            return
+    if gcmatch is None:
+        print("Need to import Geological Context first!")
+        return
+    else:
+        try:
+            locality = GeologicalContext.objects.get(name=lname)
+        except:
+            if lname in locality_names:
+                lname2 = locality_names[lname]
+                locality = GeologicalContext.objects.get(name=lname2)
+            elif not any(char.isdigit() for char in lname):
+                lname2 = lname + " 1"
+                locality = GeologicalContext.objects.get(name=lname2)
+            else:
+                print("Need to import Geological Context first!")
+                return
 
     db = AccessParser(file_path)
     context = db.parse_table('Context')
