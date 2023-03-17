@@ -39,6 +39,18 @@ CUSTOM_MAP_SETTINGS = {
     ),
 }
 
+class ShortGeoContextFilter(admin.SimpleListFilter):
+    title = "geological context"
+    parameter_name = "geological_context"
+
+    def lookups(self, request, model_admin):
+        geocontexts = set([eo.geological_context for eo in model_admin.model.objects.all()])
+        return [(gc.id, gc.name) for gc in geocontexts]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(geologicalcontext__id=self.value())
+
 
 psrformfield = {
     models.CharField: {'widget': TextInput(attrs={'size': '50'})},
@@ -51,7 +63,7 @@ psrformfield = {
 default_read_only_fields = ('id', 'geom', 'point_x', 'point_y', 'easting', 'northing', 'date_last_modified', 'date_created', 'last_import', 'date_collected',
                             'basis_of_record', 'collecting_method')
 
-default_occurrence_filter = ['geological_context', 'collector', 'finder',]
+default_occurrence_filter = [ShortGeoContextFilter, 'collector', 'finder',]
 
 lithic_fields = ('dataclass', 'type1', 'type2', 'technique', 'form', 'raw_material', 'raw_material1',
                  'coretype', 'biftype', 'cortex', 'retedge', 'edgedamage', 'alteration', 'scarmorph',
@@ -301,19 +313,6 @@ class OccurrenceAdmin(projects.admin.PaleoCoreOccurrenceAdmin):
             path('import_data/', psr.views.ImportShapefileDirectory.as_view())
         ]
         return tool_item_urls + super(OccurrenceAdmin, self).get_urls()
-
-
-class ShortGeoContextFilter(admin.SimpleListFilter):
-    title = "By geological context"
-    parameter_name = "geological_context"
-
-    def lookups(self, request, model_admin):
-        geocontexts = set([eo.geological_context for eo in model_admin.model.objects.all()])
-        return [(gc.id, gc.name) for gc in geocontexts]
-
-    def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(geologicalcontext__id=self.value())
 
 
 class ExcavationOccurrenceResource(resources.ModelResource):
