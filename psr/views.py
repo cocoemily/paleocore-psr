@@ -187,10 +187,11 @@ class ImportAccessDatabase(generic.FormView):
                 lname = name[0].capitalize() + " " + name[1].capitalize()
 
         ExcavationOccurrence.objects.all().update(last_import=False)
-        #parse_mdb(file.temporary_file_path(), lname)
-        parse_access(file.temporary_file_path(), lname)
-        subtype_finds(survey = False)
-        subtype_archaeology(survey = False)
+        # parse_mdb(file.temporary_file_path(), lname)
+        # parse_access(file.temporary_file_path(), lname)
+        parse_access(self.get_import_file_path(), lname)
+        subtype_finds(survey=False)
+        subtype_archaeology(survey=False)
 
     def form_valid(self, form):
         self.import_excavated_instances()

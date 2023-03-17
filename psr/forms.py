@@ -29,7 +29,7 @@ class UploadShapefileDirectory(forms.Form):
 class UploadMDB(forms.Form):
     mdbUpload = forms.FileField(
         label='Upload an Access Database, *.mdb',
-        widget=forms.FileInput(attrs={'accept': 'application/mdb'}) #not actually a file type, so doesn't limit
+        widget=forms.FileInput(attrs={'accept': 'application/mdb'}) # not actually a file type, so doesn't limit
     )
 
 
