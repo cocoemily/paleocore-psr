@@ -47,7 +47,7 @@ class ShortGeoContextFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         # geocontexts = set([eo.geological_context for eo in model_admin.model.objects.all()])
-        geocontexts = set(model_admin.model.objects.order_by('geological_context').values_list('geological_context', flat = True).distinct('geological_context'))
+        geocontexts = set(model_admin.model.objects.values_list('geological_context', flat=True).distinct('geological_context'))
         return [(gc.id, gc.name) for gc in geocontexts]
 
     def queryset(self, request, queryset):
