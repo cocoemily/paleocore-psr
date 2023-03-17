@@ -24,6 +24,7 @@ from .forms import *
 from .utilities import *
 from .ontologies import *  # import vocabularies and choice lists
 
+os.environ['FILE_UPLOAD_MAX_MEMORY_SIZE'] = 1000
 
 class ImportShapefile(generic.FormView):
     template_name = "admin/psr/import_file.html"
@@ -188,8 +189,7 @@ class ImportAccessDatabase(generic.FormView):
 
         ExcavationOccurrence.objects.all().update(last_import=False)
         # parse_mdb(file.temporary_file_path(), lname)
-        # parse_access(file.temporary_file_path(), lname)
-        parse_access(self.get_import_file_path(), lname)
+        parse_access(file.temporary_file_path(), lname)
         subtype_finds(survey=False)
         subtype_archaeology(survey=False)
 
