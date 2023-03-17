@@ -1036,13 +1036,13 @@ def parse_access(file_path, site_name, locality_names=locality_names):
         return
     else:
         try:
-            locality = GeologicalContext.objects.get(name=gcmatch)
+            locality = GeologicalContext.objects.get(name=gcmatch[0])
         except:
             if gcmatch in locality_names:
-                lname2 = locality_names[gcmatch]
+                lname2 = locality_names[gcmatch[0]]
                 locality = GeologicalContext.objects.get(name=lname2)
             elif not any(char.isdigit() for char in lname):
-                lname2 = gcmatch + " 1"
+                lname2 = gcmatch[0] + " 1"
                 locality = GeologicalContext.objects.get(name=lname2)
             else:
                 print("Need to import Geological Context first!")
