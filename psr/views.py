@@ -188,7 +188,14 @@ class ImportAccessDatabase(generic.FormView):
 
         ExcavationOccurrence.objects.all().update(last_import=False)
         # parse_mdb(file.temporary_file_path(), lname)
-        parse_access(file.temporary_file_path(), lname)
+        if type(file) is 'django.core.files.uploadedfile.InMemoryUploadedFile':
+            tmp = tempfile.NamedTemporaryFile()
+            with open(tmp.name, 'wb') as t:
+                with open(file.name, 'rb') as f:
+                    t.write(f.read())
+            parse_access(tmp.name, lname)
+        else:
+            parse_access(file.temporary_file_path(), lname)
         subtype_finds(survey=False)
         subtype_archaeology(survey=False)
 
