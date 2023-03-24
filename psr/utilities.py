@@ -1035,7 +1035,7 @@ def parse_access(file_path, site_name, locality_names=locality_names):
         print("Need to import Geological Context first!")
         return
     else:
-        if gcmatch[1] == 100:
+        if gcmatch[1] >= 90:
             locality = GeologicalContext.objects.get(name=gcmatch[0])
         else:
             lname2 = locality_names[lname.capitalize()]
