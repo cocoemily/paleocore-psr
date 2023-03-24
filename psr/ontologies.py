@@ -119,6 +119,6 @@ FIELD_SEASON_CHOICES = (
 
 locality_names = {
     "Kyzylzhartas": "Qyzyljartas",
-    "Tuttybulaq Upper": "Tuttybulaq 2",
+    "Tuttybulaq upper": "Tuttybulaq 2",
     "Zhetiotau": "Jetiotau Cave"
 }
