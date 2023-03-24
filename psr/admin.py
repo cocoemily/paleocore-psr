@@ -52,7 +52,7 @@ class ShortGeoContextFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(geologicalcontext__id=self.value())
+            return queryset.filter(geological_context__id=self.value())
 
 
 psrformfield = {
