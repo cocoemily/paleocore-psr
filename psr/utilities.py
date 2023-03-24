@@ -285,9 +285,9 @@ def get_survey_arch():
 
 def get_excav_arch():
     all_arch_ids = {f.id for f in ExcavatedArchaeology.objects.all()}
-    subclass_ids = {f.occurrence_ptr_id for f in ExcavatedLithic.objects.all()} | \
-                   {f.occurrence_ptr_id for f in ExcavatedBone.objects.all()} | \
-                   {f.occurrence_ptr_id for f in ExcavatedCeramic.objects.all()}
+    subclass_ids = {f.excavationoccurrence_ptr_id for f in ExcavatedLithic.objects.all()} | \
+                   {f.excavationoccurrence_ptr_id for f in ExcavatedBone.objects.all()} | \
+                   {f.excavationoccurrence_ptr_id for f in ExcavatedCeramic.objects.all()}
     find_ids = all_arch_ids.difference(subclass_ids)
     # return list(find_ids)
     return ExcavatedArchaeology.objects.filter(id__in=find_ids)
@@ -937,94 +937,94 @@ def get_locality_name(file_path):
     return lname
 
 
-def parse_mdb(file_path, site_name, locality_names=locality_names):
-    lname = site_name
-
-    try:
-        locality = GeologicalContext.objects.get(name=lname)
-    except:
-        if lname in locality_names:
-            lname2 = locality_names[lname]
-            locality = GeologicalContext.objects.get(name=lname2)
-        elif not any(char.isdigit() for char in lname):
-            lname2 = lname + " 1"
-            locality = GeologicalContext.objects.get(name=lname2)
-        else:
-            print("Need to import Geological Context first!")
-            return
-
-    # db = AccessParser(file_path)
-    # context = db.parse_table("Context")
-    # xyz = db.parse_table("xyz")
-    # units = db.parse_table("EDM_Units")
-
-    context = MDBTable(file_path, "Context")
-    xyz = MDBTable(file_path, "xyz")
-    units = MDBTable(file_path, "EDM_Units")
-
-    for u in units:
-        psr_eu = ExcavationUnit.objects.get_or_create(unit=u[0], geological_context=locality)[0]
-        psr_eu.extent = MultiPoint(Point(int(u[2]), int(u[4]), srid=-1), Point(int(u[3]), int(u[5]), srid=-1), srid=-1)
-        psr_eu.save()
-
-    for obj in context:
-        un = ExcavationUnit.objects.get_or_create(unit=obj[0], geological_context=locality)[0]
-        psr_eo = ExcavationOccurrence.objects.get_or_create(geological_context=locality, unit=un, field_id=obj[1])[0]
-        psr_eo.level = obj[2]
-        psr_eo.type = obj[3]
-        psr_eo.excavator = obj[4]
-        psr_eo.cat_number = obj[0] + " " + obj[1]
-
-        mdb_name = obj[4]
-        full_name = [val for key, val in PERSON_DICTIONARY.items() if mdb_name.lower().capitalize() in key]
-        if full_name.__len__() != 0:
-            name = full_name[0].split(" ")
-            psr_eo.found_by = Person.objects.get_or_create(last_name=name[1], first_name=name[0])[0]
-
-        # set item type code for subtyping
-        if psr_eo.type in PSR_ARCHAEOLOGY_VOCABULARY:
-            psr_eo.item_type = "Archaeological"
-        elif psr_eo.type in PSR_BIOLOGY_VOCABULARY:
-            psr_eo.item_type = "Biological"
-        elif psr_eo.type in PSR_GEOLOGY_VOCABULARY:
-            psr_eo.item_type = "Geological"
-        elif psr_eo.type in PSR_AGGREGATE_VOCABULARY:
-            psr_eo.item_type = "Aggregate"
-        else:
-            pass
-
-        psr_eo.last_import = True
-        psr_eo.save()
-
-    for p in xyz:
-        un = ExcavationUnit.objects.get_or_create(unit=p[0], geological_context=locality)[0]
-        eo = ExcavationOccurrence.objects.get_or_create(unit=un, field_id=p[1], geological_context=locality)
-        obj = eo[0]
-        is_new = eo[1]
-
-        if obj.prism is None:
-            prism_list = []
-        else:
-            prism_list = obj.prism
-        prism_list.append(p[3])
-        obj.prism = prism_list
-
-        if (p[7] + " " + p[8]) is not " ":
-            obj.date_collected = datetime.strptime(p[7] + " " + p[8], '%m/%d/%Y %I:%M:%S %p')
-
-        if not is_new:
-            if obj.point is not None:
-                new_point = Point(float(p[4]), float(p[5]), float(p[6]), srid=-1)
-                points = [pt for pt in obj.point]
-                if new_point not in points:
-                    points.append(new_point)
-                    obj.point = MultiPoint(points, srid=-1)
-            else:
-                obj.point = MultiPoint(Point(float(p[4]), float(p[5]), float(p[6]), srid=-1))
-        else:
-            obj.point = MultiPoint(Point(float(p[4]), float(p[5]), float(p[6]), srid=-1))
-
-        obj.save()
+# def parse_mdb(file_path, site_name, locality_names=locality_names):
+#     lname = site_name
+#
+#     try:
+#         locality = GeologicalContext.objects.get(name=lname)
+#     except:
+#         if lname in locality_names:
+#             lname2 = locality_names[lname]
+#             locality = GeologicalContext.objects.get(name=lname2)
+#         elif not any(char.isdigit() for char in lname):
+#             lname2 = lname + " 1"
+#             locality = GeologicalContext.objects.get(name=lname2)
+#         else:
+#             print("Need to import Geological Context first!")
+#             return
+#
+#     # db = AccessParser(file_path)
+#     # context = db.parse_table("Context")
+#     # xyz = db.parse_table("xyz")
+#     # units = db.parse_table("EDM_Units")
+#
+#     context = MDBTable(file_path, "Context")
+#     xyz = MDBTable(file_path, "xyz")
+#     units = MDBTable(file_path, "EDM_Units")
+#
+#     for u in units:
+#         psr_eu = ExcavationUnit.objects.get_or_create(unit=u[0], geological_context=locality)[0]
+#         psr_eu.extent = MultiPoint(Point(int(u[2]), int(u[4]), srid=-1), Point(int(u[3]), int(u[5]), srid=-1), srid=-1)
+#         psr_eu.save()
+#
+#     for obj in context:
+#         un = ExcavationUnit.objects.get_or_create(unit=obj[0], geological_context=locality)[0]
+#         psr_eo = ExcavationOccurrence.objects.get_or_create(geological_context=locality, unit=un, field_id=obj[1])[0]
+#         psr_eo.level = obj[2]
+#         psr_eo.type = obj[3]
+#         psr_eo.excavator = obj[4]
+#         psr_eo.cat_number = obj[0] + " " + obj[1]
+#
+#         mdb_name = obj[4]
+#         full_name = [val for key, val in PERSON_DICTIONARY.items() if mdb_name.lower().capitalize() in key]
+#         if full_name.__len__() != 0:
+#             name = full_name[0].split(" ")
+#             psr_eo.found_by = Person.objects.get_or_create(last_name=name[1], first_name=name[0])[0]
+#
+#         # set item type code for subtyping
+#         if psr_eo.type in PSR_ARCHAEOLOGY_VOCABULARY:
+#             psr_eo.item_type = "Archaeological"
+#         elif psr_eo.type in PSR_BIOLOGY_VOCABULARY:
+#             psr_eo.item_type = "Biological"
+#         elif psr_eo.type in PSR_GEOLOGY_VOCABULARY:
+#             psr_eo.item_type = "Geological"
+#         elif psr_eo.type in PSR_AGGREGATE_VOCABULARY:
+#             psr_eo.item_type = "Aggregate"
+#         else:
+#             pass
+#
+#         psr_eo.last_import = True
+#         psr_eo.save()
+#
+#     for p in xyz:
+#         un = ExcavationUnit.objects.get_or_create(unit=p[0], geological_context=locality)[0]
+#         eo = ExcavationOccurrence.objects.get_or_create(unit=un, field_id=p[1], geological_context=locality)
+#         obj = eo[0]
+#         is_new = eo[1]
+#
+#         if obj.prism is None:
+#             prism_list = []
+#         else:
+#             prism_list = obj.prism
+#         prism_list.append(p[3])
+#         obj.prism = prism_list
+#
+#         if (p[7] + " " + p[8]) is not " ":
+#             obj.date_collected = datetime.strptime(p[7] + " " + p[8], '%m/%d/%Y %I:%M:%S %p')
+#
+#         if not is_new:
+#             if obj.point is not None:
+#                 new_point = Point(float(p[4]), float(p[5]), float(p[6]), srid=-1)
+#                 points = [pt for pt in obj.point]
+#                 if new_point not in points:
+#                     points.append(new_point)
+#                     obj.point = MultiPoint(points, srid=-1)
+#             else:
+#                 obj.point = MultiPoint(Point(float(p[4]), float(p[5]), float(p[6]), srid=-1))
+#         else:
+#             obj.point = MultiPoint(Point(float(p[4]), float(p[5]), float(p[6]), srid=-1))
+#
+#         obj.save()
 
 
 def parse_access(file_path, site_name, locality_names=locality_names):
@@ -1059,7 +1059,7 @@ def parse_access(file_path, site_name, locality_names=locality_names):
             # psr_eu.extent = MultiPoint(Point(int(u[2]), int(u[4]), srid=-1), Point(int(u[3]), int(u[5]), srid=-1), srid=-1)
             psr_eu.save()
 
-    for i in range(0, len(context["ID"])):
+    for i in range(0, len(context["ID"]) - 1):
         un = ExcavationUnit.objects.get_or_create(unit=context["Unit"][i], geological_context=locality)[0]
         psr_eo = ExcavationOccurrence.objects.get_or_create(geological_context=locality, unit=un, field_id=context["ID"][i])[0]
         psr_eo.level = context["level"][i]
@@ -1088,7 +1088,7 @@ def parse_access(file_path, site_name, locality_names=locality_names):
         psr_eo.last_import = True
         psr_eo.save()
 
-    for i in range(0, len(xyz["ID"])):
+    for i in range(0, len(xyz["ID"]) - 1):
         un = ExcavationUnit.objects.get_or_create(unit=xyz["Unit"][i], geological_context=locality)[0]
         eo = ExcavationOccurrence.objects.get_or_create(unit=un, field_id=xyz["ID"][i], geological_context=locality)
         obj = eo[0]

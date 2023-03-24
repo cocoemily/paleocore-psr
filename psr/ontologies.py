@@ -32,8 +32,8 @@ PSR_CAVE_RS_VOCABULARY = ("Cave", "Rockshelter", "Cave/Rockshelter", "cave", "ro
 
 PSR_LOESS_PROF_VOCABULARY = ("Loess Profile", "Loess", "Profile", "loess", "profile", "loess profile")
 
-PSR_ARCHAEOLOGY_VOCABULARY = ( lithics, lithic, ceramic, ceramics, burial, bones, bone , "BONE", "Bone", "C14", "LITHIC",
-                               "bead", "dent", "manuport", "woodid", "lithic", "lithics")
+PSR_ARCHAEOLOGY_VOCABULARY = ( lithics, lithic, ceramic, ceramics, burial, bones, bone, "BONE", "Bone", "C14", "LITHIC",
+                               "bead", "dent", "manuport", "woodid", "lithic", "lithics", "hombone", "homdent", "HOMBONE", "HOMDENT")
 
 PSR_GEOLOGY_VOCABULARY = ( hearth, petroglyphs, geosample , "ERT", "GPR", "GPRGRID", "OSL", "ROCK", "Rock", "TOPO", "geosample",
                            "micromorph", "red_thing", "sediment", )
